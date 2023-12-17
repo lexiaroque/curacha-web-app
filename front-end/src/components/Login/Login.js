@@ -21,7 +21,17 @@ const Login = () => {
       const url = 'http://localhost:4000/api/auth/login';
       const { data: res } = await axios.post(url, data);
       localStorage.setItem('token', res.data);
-      navigate('/profile');  // Use navigate for navigation
+      
+
+      // Display alert if the user logs in as an admin
+      if (res.userType === 'admin') {
+        navigate('/admin-profile'); 
+        window.alert('Admin logged in successfully!');
+        
+      } else {
+        window.alert('User logged in successfully!');
+        navigate('/profile');  // Redirect to the user profile page
+      }
     } catch (error) {
       if (
         error.response &&
@@ -31,7 +41,7 @@ const Login = () => {
         setError(error.response.data.message);
       }
     }
-  };
+  };  
 
   return (
     <div className="loginContainer">
